@@ -44,7 +44,10 @@ async function buildIndexHtml() {
     const outputData = await replaceTemplateTags(templateData);
     await fs.mkdir(outputDir, { recursive: true });
     const indexPath = path.join(outputDir, 'index.html');
-    const indexExists = await fs.access(indexPath).then(() => true).catch(() => false);
+    const indexExists = await fs
+      .access(indexPath)
+      .then(() => true)
+      .catch(() => false);
     if (!indexExists) {
       await fs.writeFile(indexPath, outputData);
       console.log('index.html successfully created');
@@ -62,10 +65,13 @@ async function buildStyleCss() {
     const cssFiles = await fs.readdir(stylesDir);
     const cssContent = await Promise.all(
       cssFiles
-        .filter(file => path.extname(file) === '.css')
-        .map(file => fs.readFile(path.join(stylesDir, file), 'utf8'))
+        .filter((file) => path.extname(file) === '.css')
+        .map((file) => fs.readFile(path.join(stylesDir, file), 'utf8')),
     );
-    await fs.writeFile(path.join(outputDir, 'style.css'), cssContent.join('\n'));
+    await fs.writeFile(
+      path.join(outputDir, 'style.css'),
+      cssContent.join('\n'),
+    );
     console.log('style.css successfully created');
   } catch (error) {
     console.error(`rror during file creation style.css: ${error.message}`);
@@ -81,7 +87,11 @@ async function copyAssets() {
       if (stat.isDirectory()) {
         await fs.mkdir(dest, { recursive: true });
         const files = await fs.readdir(src);
-        await Promise.all(files.map(file => copyRecursive(path.join(src, file), path.join(dest, file))));
+        await Promise.all(
+          files.map((file) =>
+            copyRecursive(path.join(src, file), path.join(dest, file)),
+          ),
+        );
       } else {
         await fs.copyFile(src, dest);
       }
@@ -90,12 +100,11 @@ async function copyAssets() {
     await copyRecursive(assetsDir, path.join(outputDir, 'assets'));
     console.log('assets copied successfully');
   } catch (error) {
-    console.error(`Error while copying files from a folder assets: ${error.message}`);
+    console.error(
+      `Error while copying files from a folder assets: ${error.message}`,
+    );
   }
 }
-
-
-
 
 async function buildProject() {
   await buildIndexHtml();

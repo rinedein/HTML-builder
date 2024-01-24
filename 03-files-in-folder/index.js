@@ -3,7 +3,8 @@ const path = require('path');
 
 const secretFolderPath = path.join(__dirname, 'secret-folder');
 
-fs.promises.readdir(secretFolderPath)
+fs.promises
+  .readdir(secretFolderPath)
   .then((files) => {
     files.forEach(async (file) => {
       const filePath = path.join(secretFolderPath, file);

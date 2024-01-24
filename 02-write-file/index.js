@@ -3,12 +3,13 @@ const readline = require('readline');
 
 const rl = readline.createInterface({
   input: process.stdin,
-  output: process.stdout
+  output: process.stdout,
 });
 
 const filePath = './02-write-file/text.txt';
 
-fs.promises.access(filePath, fs.constants.F_OK)
+fs.promises
+  .access(filePath, fs.constants.F_OK)
   .then(() => {})
   .catch(() => fs.promises.writeFile(filePath, ''));
 

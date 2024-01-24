@@ -17,20 +17,24 @@ function copyDir(src, dest) {
           console.error(err);
           return;
         }
-        const destFileNames = destFiles.map((file) => file.name);
         files.forEach((file) => {
           const srcPath = path.join(src, file.name);
           const destPath = path.join(dest, file.name);
           if (file.isDirectory()) {
             copyDir(srcPath, destPath);
           } else {
-            fs.copyFile(srcPath, destPath, fs.constants.COPYFILE_FICLONE, (err) => {
-              if (err) {
-                console.error(err);
-                return;
-              }
-              console.log(`${srcPath} copy in ${destPath}`);
-            });
+            fs.copyFile(
+              srcPath,
+              destPath,
+              fs.constants.COPYFILE_FICLONE,
+              (err) => {
+                if (err) {
+                  console.error(err);
+                  return;
+                }
+                console.log(`${srcPath} copy in ${destPath}`);
+              },
+            );
           }
         });
         destFiles.forEach((destFile) => {
